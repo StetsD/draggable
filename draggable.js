@@ -248,16 +248,10 @@ export default class Draggable {
 
 	setCoordsToElem(coords, elem){
 		let element = elem || this.dragCurrentElem;
-		if(coords.top){
-			element.css({
-				'top': coords.top
-			});
-		}
-		if(coords.left){
-			element.css({
-				'left': coords.left
-			});
-		}
+		element.css({
+			'top': coords.top,
+			'left': coords.left
+		});
 	}
 
 	clearElem(elem){
