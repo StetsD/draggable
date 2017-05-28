@@ -4,14 +4,13 @@ let _storage = {
 		right: [39],
 		down: [40],
 		left: [37],
-		speed: 100,
 		step: 10
 	},
 	defineDevice: (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)),
 	keyCombo: function(key, keySuccess, keyFail){
 		var map = {},
-			mapLength = Object.keys(key).length,
-			check = {};
+				mapLength = Object.keys(key).length,
+				check = {};
 
 		key.map(function(key){
 			map[key] = false;
@@ -60,11 +59,48 @@ let _storage = {
 	},
 	binding: function(flag, handler, event){
 		const THIS = _storage.that;
-		if(flag == 'bind'){
-			THIS.$body.on(event, THIS.elemSelector, handler);
-		}else if(flag == 'unbind'){
-			THIS.$body.off(event, THIS.elemSelector, handler);
+		if(THIS.elemSelector){
+			if(flag == 'bind'){
+				THIS.$body.on(event, THIS.elemSelector, handler);
+			}else if(flag == 'unbind'){
+				THIS.$body.off(event, THIS.elemSelector, handler);
+			}
 		}
+	},
+	parseArr: function(arrA, arrB, strategy){
+		let crossA = {};
+		let crossB = {};
+		let result = [];
+
+		if(strategy == 'original'){
+			arrA.forEach((elem, i)=>{
+				crossA[elem.replace(/\s/g, '')] = true;
+		});
+
+			arrB.forEach((elem, i)=>{
+				if(!crossA[elem.replace(/\s/g, '')]){
+				result.push(elem);
+			}
+		});
+		}
+
+		if(strategy == 'difference'){
+			arrB.forEach((elem, i)=>{
+				crossB[elem.replace(/\s/g, '')] = true;
+		});
+			arrA.forEach((elem, i)=>{
+				if(!crossB[elem.replace(/\s/g, '')]){
+				result.push(elem);
+			}
+		});
+		}
+
+		if(result[0]){
+			return result;
+		}else{
+			return false;
+		}
+
 	}
 };
 
@@ -122,7 +158,7 @@ export default class Draggable {
 		//Define event
 		let event = !mod ? 'drag' : 'navigation';
 		let eventTop = event == 'drag' ? (e.pageY || e.originalEvent.touches[0].pageY) : (mod.top),
-			eventLeft = event == 'drag' ? (e.pageX || e.originalEvent.touches[0].pageX) : (mod.left);
+				eventLeft = event == 'drag' ? (e.pageX || e.originalEvent.touches[0].pageX) : (mod.left);
 
 		//Calc standard
 		if(event == 'drag'){
@@ -164,8 +200,8 @@ export default class Draggable {
 		if(this.destination){
 			outer: for(var i = 0; i < this.bordersDestination.length; i++){
 				let {top:bdTop,right:bdRight,bottom:bdBottom,left:bdLeft} = this.bordersDestination[i],
-					dragBottom = dragTop+height,
-					dragRight = dragLeft+width;
+						dragBottom = dragTop+height,
+						dragRight = dragLeft+width;
 				if((dragBottom > bdTop && dragRight > bdLeft) && (dragLeft < bdRight && dragTop < bdBottom)){
 
 					if(!this.destination.strict){
@@ -191,14 +227,14 @@ export default class Draggable {
 		if(this.imposition){
 
 			var cssTop = parseInt(this.dragCurrentElem.css('top')),
-				cssLeft = parseInt(this.dragCurrentElem.css('left'));
+					cssLeft = parseInt(this.dragCurrentElem.css('left'));
 
 			outer: for(var i = 0; i < this.bordersImposition.length; i++){
 				let {top:bdTop,right:bdRight,bottom:bdBottom,left:bdLeft} = this.bordersImposition[i],
-					cssBottom = cssTop+height,
-					cssRight = cssLeft+width,
-					dragBottom = dragTop+height,
-					dragRight = dragLeft+width;
+						cssBottom = cssTop+height,
+						cssRight = cssLeft+width,
+						dragBottom = dragTop+height,
+						dragRight = dragLeft+width;
 
 				if(dragBottom >= bdTop && dragRight >= bdLeft && dragLeft <= bdRight && dragTop <= bdBottom){
 
@@ -226,16 +262,18 @@ export default class Draggable {
 	}
 
 	getSizesElem(elem){
+		let element = (typeof elem == 'string') ? $(elem) : elem;
 		return {
-			width:elem.innerWidth(),
-			height:elem.innerHeight()
+			width:element.innerWidth(),
+			height:element.innerHeight()
 		}
 	}
 
 	getOffsetElem(elem){
+		let element = (typeof elem == 'string') ? $(elem) : elem;
 		return {
-			top:elem.offset().top,
-			left:elem.offset().left
+			top:element.offset().top,
+			left:element.offset().left
 		};
 	}
 
@@ -275,12 +313,12 @@ export default class Draggable {
 		}
 		function setB(elem, name, flag){
 			let {top, left} = that.getOffsetElem(elem),
-				{height, width} = that.getSizesElem(elem),
-				pack = {
-					right: width + left,
-					bottom: height + top,
-					top,left,elem
-				};
+					{height, width} = that.getSizesElem(elem),
+					pack = {
+						right: width + left,
+						bottom: height + top,
+						top,left,elem
+					};
 
 			if(flag == 'object'){
 				that[name] = pack;
@@ -298,7 +336,7 @@ export default class Draggable {
 
 		if(!that.dragCurrentElem){return false}
 		let elem = that.dragCurrentElem,
-			classList = elem[0].classList;
+				classList = elem[0].classList;
 
 		switch(_case){
 			case 'drag:move':{
@@ -370,7 +408,7 @@ export default class Draggable {
 
 			case 'drag:end':{
 				let pageX = e.pageX,
-					pageY = e.pageY;
+						pageY = e.pageY;
 
 				that.dragLastElem = that.dragCurrentElem;
 
@@ -504,7 +542,7 @@ export default class Draggable {
 			that.elemSize = that.getSizesElem(that.dragCurrentElem);
 
 			let {top, left} = that.elemOffset,
-				modTop, modLeft;
+					modTop, modLeft;
 			if(command == 'key:up'){
 				modTop = top - step;
 				modLeft = left;
@@ -539,81 +577,108 @@ export default class Draggable {
 
 		_storage.binding('bind', _storage.dragEnd, that.eventDragEnd);
 
-		this.$elem.on('dragstart', function(){
+		this.$body.on('dragstart', this.elemSelector, function(){
 			return false;
 		});
 
 		if(that.cloneKey){
 			_storage.keyCombo(that.cloneKey, ()=>{
 				that.onCloneKey = true;
-			}, ()=>{
+		}, ()=>{
 				that.onCloneKey = false;
 			});
 		}
 
 		if(that.navigation){
 			let {up, right, down, left} = that.navigation,
-				{_storageUp, _storageRight, _storageDown, _storageLeft} = _storage.navigation;
+					{_storageUp, _storageRight, _storageDown, _storageLeft} = _storage.navigation;
 
 			let keyUp = up || _storageUp,
-				keyRight = right || _storageRight,
-				keyDown = down || _storageDown,
-				keyLeft = left || _storageLeft;
+					keyRight = right || _storageRight,
+					keyDown = down || _storageDown,
+					keyLeft = left || _storageLeft;
 
 			setTimeout(function(){
 				_storage.keyCombo(keyUp, ()=>{
 					that.eventsAdapter('key:up');
-				});
+			});
 			}, 0);
 
 			setTimeout(function(){
 				_storage.keyCombo(keyRight, ()=>{
 					that.eventsAdapter('key:right');
-				});
+			});
 			}, 0);
 
 
 			_storage.keyCombo(keyDown, ()=>{
 				that.eventsAdapter('key:down');
-			});
+		});
 			_storage.keyCombo(keyLeft, ()=>{
 				that.eventsAdapter('key:left');
-			});
+		});
 		}
 
 		return this;
 	}
 
 	bind(elem){
-		let oldSelectors;
-		if(this.elemSelector.indexOf(',') !== -1){
-			oldSelectors = this.elemSelector.split(',').push(elem);
-		}else{
-			oldSelectors = this.elemSelector.split();
+		let oldSelectors = this.elemSelector.split(','),
+				newSelectors = elem.split(',');
+
+		if(!oldSelectors[0]){oldSelectors.splice(0,1)}
+
+		let completeSelectors = _storage.parseArr(oldSelectors, newSelectors, 'original');
+
+		if(completeSelectors){
+			completeSelectors.forEach((elem)=>{
+				oldSelectors.push(elem);
+		});
+
+			this.elemSelector = oldSelectors.join(',');
+			_storage.binding('bind', _storage.dragStart, this.eventDragStart);
+
+			this.controller();
 		}
-		oldSelectors.push(elem);
-
-		this.elemSelector = oldSelectors.join(',');
-		_storage.binding('bind', _storage.dragStart, this.eventDragStart);
-
-		this.controller();
 	}
 
 	unbind(elem){
 		var oldSelectors = this.elemSelector.split(','),
-			newSelectors = [];
-		oldSelectors.filter((el)=> {
-			if(elem !== el.replace(/\s/g, '')){newSelectors.push(el)}
-		});
-		_storage.binding('unbind', _storage.dragStart, this.eventDragStart);
-		this.elemSelector = newSelectors.join(',');
+				newSelectors = elem.split(',');
+
+
+
+		let completeSelectors = _storage.parseArr(oldSelectors, newSelectors, 'difference');
+
+		if(completeSelectors){
+			_storage.binding('unbind', _storage.dragStart, this.eventDragStart);
+			this.elemSelector = completeSelectors.join(',');
+		}else{
+			_storage.binding('unbind', _storage.dragStart, this.eventDragStart);
+			this.elemSelector = '';
+		}
 
 		this.controller();
+	}
+
+	set(params){
+		for(var key in params){
+			if(this.hasOwnProperty(key)){
+				this[key] = params[key];
+			}else{
+				throw new TypeError(`Option ${i} does not exist`);
+			}
+		}
+
+		this.init();
+		return this;
 	}
 
 	init(){
 		var that = this;
 		_storage.that = this;
+
+		that.$elem = $(that.$elem);
 
 		if(that.$borderElem){that.setBorders(that.$borderElem,'borders')}
 		if(that.destination){that.setBorders($(that.destination.target), 'bordersDestination')}
