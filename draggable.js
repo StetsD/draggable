@@ -9,8 +9,8 @@ let _storage = {
 	defineDevice: (('ontouchstart' in window) || (navigator.MaxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)),
 	keyCombo: function(key, keySuccess, keyFail){
 		var map = {},
-				mapLength = Object.keys(key).length,
-				check = {};
+			mapLength = Object.keys(key).length,
+			check = {};
 
 		key.map(function(key){
 			map[key] = false;
@@ -75,24 +75,24 @@ let _storage = {
 		if(strategy == 'original'){
 			arrA.forEach((elem, i)=>{
 				crossA[elem.replace(/\s/g, '')] = true;
-		});
+			});
 
 			arrB.forEach((elem, i)=>{
 				if(!crossA[elem.replace(/\s/g, '')]){
-				result.push(elem);
-			}
-		});
+					result.push(elem);
+				}
+			});
 		}
 
 		if(strategy == 'difference'){
 			arrB.forEach((elem, i)=>{
 				crossB[elem.replace(/\s/g, '')] = true;
-		});
+			});
 			arrA.forEach((elem, i)=>{
 				if(!crossB[elem.replace(/\s/g, '')]){
-				result.push(elem);
-			}
-		});
+					result.push(elem);
+				}
+			});
 		}
 
 		if(result[0]){
@@ -104,7 +104,7 @@ let _storage = {
 	}
 };
 
-export default class Draggable {
+export default class Drag {
 	constructor(config){
 		this.$body = $('body');
 		this.$elem = $(config.$elem);
@@ -129,7 +129,7 @@ export default class Draggable {
 		this.clearGarbage = (typeof config.clearGarbage === 'boolean') ? config.clearGarbage : false;
 
 		this.callOnTarget = (typeof config.callOnTarget === 'function') ? config.callOnTarget : false;
-		this.callOutTarget = (typeof config.callOutTarget === 'function') ? config.callOutTarget : false;
+		this.callDragEnd = (typeof config.callDragEnd === 'function') ? config.callDragEnd : false;
 
 		this.isTouch = _storage.defineDevice;
 		this.eventDragStart = _storage.defineDevice ? 'touchstart' : 'mousedown';
@@ -158,7 +158,7 @@ export default class Draggable {
 		//Define event
 		let event = !mod ? 'drag' : 'navigation';
 		let eventTop = event == 'drag' ? (e.pageY || e.originalEvent.touches[0].pageY) : (mod.top),
-				eventLeft = event == 'drag' ? (e.pageX || e.originalEvent.touches[0].pageX) : (mod.left);
+			eventLeft = event == 'drag' ? (e.pageX || e.originalEvent.touches[0].pageX) : (mod.left);
 
 		//Calc standard
 		if(event == 'drag'){
@@ -200,8 +200,8 @@ export default class Draggable {
 		if(this.destination){
 			outer: for(var i = 0; i < this.bordersDestination.length; i++){
 				let {top:bdTop,right:bdRight,bottom:bdBottom,left:bdLeft} = this.bordersDestination[i],
-						dragBottom = dragTop+height,
-						dragRight = dragLeft+width;
+					dragBottom = dragTop+height,
+					dragRight = dragLeft+width;
 				if((dragBottom > bdTop && dragRight > bdLeft) && (dragLeft < bdRight && dragTop < bdBottom)){
 
 					if(!this.destination.strict){
@@ -227,14 +227,14 @@ export default class Draggable {
 		if(this.imposition){
 
 			var cssTop = parseInt(this.dragCurrentElem.css('top')),
-					cssLeft = parseInt(this.dragCurrentElem.css('left'));
+				cssLeft = parseInt(this.dragCurrentElem.css('left'));
 
 			outer: for(var i = 0; i < this.bordersImposition.length; i++){
 				let {top:bdTop,right:bdRight,bottom:bdBottom,left:bdLeft} = this.bordersImposition[i],
-						cssBottom = cssTop+height,
-						cssRight = cssLeft+width,
-						dragBottom = dragTop+height,
-						dragRight = dragLeft+width;
+					cssBottom = cssTop+height,
+					cssRight = cssLeft+width,
+					dragBottom = dragTop+height,
+					dragRight = dragLeft+width;
 
 				if(dragBottom >= bdTop && dragRight >= bdLeft && dragLeft <= bdRight && dragTop <= bdBottom){
 
@@ -313,12 +313,12 @@ export default class Draggable {
 		}
 		function setB(elem, name, flag){
 			let {top, left} = that.getOffsetElem(elem),
-					{height, width} = that.getSizesElem(elem),
-					pack = {
-						right: width + left,
-						bottom: height + top,
-						top,left,elem
-					};
+				{height, width} = that.getSizesElem(elem),
+				pack = {
+					right: width + left,
+					bottom: height + top,
+					top,left,elem
+				};
 
 			if(flag == 'object'){
 				that[name] = pack;
@@ -336,7 +336,7 @@ export default class Draggable {
 
 		if(!that.dragCurrentElem){return false}
 		let elem = that.dragCurrentElem,
-				classList = elem[0].classList;
+			classList = elem[0].classList;
 
 		switch(_case){
 			case 'drag:move':{
@@ -408,7 +408,7 @@ export default class Draggable {
 
 			case 'drag:end':{
 				let pageX = e.pageX,
-						pageY = e.pageY;
+					pageY = e.pageY;
 
 				that.dragLastElem = that.dragCurrentElem;
 
@@ -488,7 +488,7 @@ export default class Draggable {
 			}
 
 			case 'drag:outDest':{
-				this.callOutTarget && this.callOutTarget(that.dragCurrentElem, that.lastStartTarget, that.lastPoint);
+				this.callDragEnd && this.callDragEnd(that.dragCurrentElem, that.lastStartTarget, that.lastPoint);
 				break;
 			}
 
@@ -542,7 +542,7 @@ export default class Draggable {
 			that.elemSize = that.getSizesElem(that.dragCurrentElem);
 
 			let {top, left} = that.elemOffset,
-					modTop, modLeft;
+				modTop, modLeft;
 			if(command == 'key:up'){
 				modTop = top - step;
 				modLeft = left;
@@ -584,39 +584,39 @@ export default class Draggable {
 		if(that.cloneKey){
 			_storage.keyCombo(that.cloneKey, ()=>{
 				that.onCloneKey = true;
-		}, ()=>{
+			}, ()=>{
 				that.onCloneKey = false;
 			});
 		}
 
 		if(that.navigation){
 			let {up, right, down, left} = that.navigation,
-					{_storageUp, _storageRight, _storageDown, _storageLeft} = _storage.navigation;
+				{_storageUp, _storageRight, _storageDown, _storageLeft} = _storage.navigation;
 
 			let keyUp = up || _storageUp,
-					keyRight = right || _storageRight,
-					keyDown = down || _storageDown,
-					keyLeft = left || _storageLeft;
+				keyRight = right || _storageRight,
+				keyDown = down || _storageDown,
+				keyLeft = left || _storageLeft;
 
 			setTimeout(function(){
 				_storage.keyCombo(keyUp, ()=>{
 					that.eventsAdapter('key:up');
-			});
+				});
 			}, 0);
 
 			setTimeout(function(){
 				_storage.keyCombo(keyRight, ()=>{
 					that.eventsAdapter('key:right');
-			});
+				});
 			}, 0);
 
 
 			_storage.keyCombo(keyDown, ()=>{
 				that.eventsAdapter('key:down');
-		});
+			});
 			_storage.keyCombo(keyLeft, ()=>{
 				that.eventsAdapter('key:left');
-		});
+			});
 		}
 
 		return this;
@@ -624,7 +624,7 @@ export default class Draggable {
 
 	bind(elem){
 		let oldSelectors = this.elemSelector.split(','),
-				newSelectors = elem.split(',');
+			newSelectors = elem.split(',');
 
 		if(!oldSelectors[0]){oldSelectors.splice(0,1)}
 
@@ -633,7 +633,7 @@ export default class Draggable {
 		if(completeSelectors){
 			completeSelectors.forEach((elem)=>{
 				oldSelectors.push(elem);
-		});
+			});
 
 			this.elemSelector = oldSelectors.join(',');
 			_storage.binding('bind', _storage.dragStart, this.eventDragStart);
@@ -644,7 +644,7 @@ export default class Draggable {
 
 	unbind(elem){
 		var oldSelectors = this.elemSelector.split(','),
-				newSelectors = elem.split(',');
+			newSelectors = elem.split(',');
 
 
 
