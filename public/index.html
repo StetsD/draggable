@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="ie8"><![endif]-->
+<!--[if gt IE 8]><html><![endif]-->
+<html>
+
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<link rel="stylesheet" href="css/style.css" />
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<title>Draggable</title>
+		<script src="js/main.bundle.js"></script>
+
+	<body>
+		<div class="wrapper">
+			<div class="website"> <input id="search">
+				<ul id="list"></ul>
+				<div class="wrap" style="position: relative;width: 500px;height: 550px;background: grey;"><img class="boxa" src="img/nodejs.svg" style="position: absolute;width: 50px;height: 50px;cursor: pointer;">
+					<div class="box" style="position: absolute;width: 50px;height: 50px;background: black;cursor: pointer;right:0;"></div>
+					<div class="dest" style="position: absolute;width: 100px;height: 100px;background: green; bottom:0;right:0;top:0;left:0;margin:auto;"></div>
+					<div class="wall" style="position: absolute;width: 20px;height: 70%;background: red; bottom:0;right:100px;top:15%;"></div>
+					<div class="wall" style="position: absolute;width: 20%;height: 20px;background: red; bottom:0;right:100px;top:15%;"></div>
+					<div class="walla" style="position: absolute;width: 40%;height: 20px;background: red; bottom:0;right:200px;top:85%;"></div>
+				</div>
+				<div class="controls">
+					<h3>Change Params</h3>
+					<div class="form-group"><label><strong>bind(string)</strong><br/></label> <label><strong>string</strong> - '.box, .boxa'<br/></label> <input class="input" name="method:bind"><br/><br/> <label><strong>unbind(string)</strong><br/></label> <label><strong>string</strong> - '.box, .boxa'<br/></label>						<input class="input" name="method:unbind"><br/><br/> <label><strong>{$borderElem: string}</strong><br/></label> <label><strong>string</strong> - '.wrap'<br/></label> <input class="input" name="$borderElem"><br/><br/> <label><strong>{dragEndTimeout: number}</strong><br/></label>						<label><strong>number</strong> - 500<br/></label> <input class="input" name="dragEndTimeout"><br/><br/> <label><strong>{backAgain: boolean}</strong><br/></label> <input class="input" name="backAgain"><br/><br/> <label><strong>{clone: boolean}</strong><br/></label>						<input class="input" name="clone"><br/><br/> <label><strong>{clearGarbage: boolean}</strong><br/></label> <input class="input" name="clearGarbage"><br/><br/> <label><strong>{cloneKey: array}</strong><br/></label> <label><strong>array</strong> - [17, 18]<br/></label>						<input class="input" name="cloneKey"><br/><br/> <label><strong>{destination.target: string}</strong><br/></label> <label><strong>string</strong> - '.dest'<br/></label> <input class="input" name="destination"><br/><br/> <label><strong>{destination.strict: boolean}</strong><br/></label>						<input class="input" name="strict"><br/><br/> <label><strong>{imposition: 'string'}</strong><br/></label> <label><strong>string</strong> - '.wall,.walla'<br/></label> <input class="input" name="imposition"><br/><br/> <label><strong>{navigation: object}</strong><br/></label>
+						<p><strong>object</strong> - {up: [38],right: [39],down: [40],left: [37],speed: 100,step: 10}<br/></p> <input class="input" name="" disabled><br/><br/> <label><strong>{callOnTarget: function(target, elem, callOnTarget, lastPoint){}}</strong><br/></label>						<input class="input" name="" disabled><br/><br/> <label><strong>{callOutTarget: function(elem, callOnTarget, lastPoint){}}</strong><br/></label> <input class="input" name="" disabled><br/><br/> </div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
