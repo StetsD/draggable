@@ -6,7 +6,7 @@ Dragndrop module and implementation of keys navigation
 ## API
 
 
-####init()
+### init()
 
 Initialize Drag
 
@@ -15,7 +15,7 @@ drag.init();
 ```
 
 
-####set(options)
+### set(options)
 
 Set options to specimen of Drag. This method reload controller automatically. It means Drag-module will refreshed all properties.
 
@@ -28,7 +28,7 @@ drag.set({
 ```
 
 
-####bind(selectors)
+### bind(selectors)
 
 Method binds DOM nodes with Drag mechanics
 
@@ -41,7 +41,7 @@ drag.bind('.box, .boxa');
 ```
 
 
-####unbind(selectors)
+### unbind(selectors)
 
 Method unbind DOM nodes
 
@@ -57,7 +57,7 @@ drag.unbind('.box, .boxa');
 
 ## OPTIONS
 
-####$elem
+### $elem
 
 Initial selector which will be bound with Drag mechanics
 
@@ -69,7 +69,7 @@ let drag = new Draggable({
     }).init();
 ```
 
-####$borderElem
+### $borderElem
 
 Set borders where will be draggable actions
 
@@ -80,7 +80,7 @@ Default `false`
 drag.set({$borderElem: '.border'});
 ```
 
-####dragEndTimeout
+### dragEndTimeout
 
 Set timer for dragEnd condition
 
@@ -90,7 +90,7 @@ Type `number`
 drag.set({dragEndTimeout: 2000});
 ```
 
-####clsDragElem
+### clsDragElem
 
 Set main class for Draggable DOM nodes
 
@@ -101,7 +101,7 @@ Default `adw-drag`
 drag.set({clsDragElem: 'myClass'});
 ```
 
-####clsDragStart
+### clsDragStart
 
 Set class for drag-start event
 
@@ -112,7 +112,7 @@ Default `adw-drag_start`
 drag.set({clsDragStart: 'myClass'});
 ```
 
-####clsDragMove
+### clsDragMove
 
 Set class for drag-move event
 
@@ -123,7 +123,7 @@ Default `adw-drag_move`
 drag.set({clsDragMove: 'myClass'});
 ```
 
-####clsDragEnd
+### clsDragEnd
 
 Set class for drag-end event
 
@@ -134,7 +134,7 @@ Default `adw-drag_end`
 drag.set({clsDragEnd: 'myClass'});
 ```
 
-####clsDragDest
+### clsDragDest
 
 Set class for drag-on-destination event
 
@@ -145,7 +145,7 @@ Default `adw-drag_on-dest`
 drag.set({clsDragDest: 'myClass'});
 ```
 
-####destination.target
+### destination.target
 
 Set destination target
 
@@ -160,7 +160,7 @@ drag.set({
 });
 ```
 
-####destination.strict
+### destination.strict
 
 Set strict mode for destination
 
@@ -175,7 +175,7 @@ drag.set({
 });
 ```
 
-####backAgain
+### backAgain
 
 When dragEnd event occurs current draggable node will reset on initial position
 
@@ -186,7 +186,7 @@ Default `false`
 drag.set({backAgain: true});
 ```
 
-####clone
+### clone
 
 Set clone node option
 
@@ -197,7 +197,7 @@ Default `false`
 drag.set({clone: true});
 ```
 
-####cloneKey
+### cloneKey
 
 Set key or key combination for cloning DOM nodes. NOTE: enable "clone" option is not required.
 
@@ -208,7 +208,7 @@ Default `false`
 drag.set({cloneKey: [17, 18]});
 ```
 
-####cloneKey
+### cloneKey
 
 Set key or key combination for cloning DOM nodes. NOTE: enable "clone" option is not required.
 
@@ -219,7 +219,7 @@ Default `false`
 drag.set({cloneKey: [17, 18]});
 ```
 
-####clearGarbage
+### clearGarbage
 
 Clear garbage node after drag-end event
 
@@ -230,7 +230,7 @@ Default `false`
 drag.set({clearGarbage: true});
 ```
 
-####clearGarbage
+### clearGarbage
 
 Clear garbage node after drag-end event
 
@@ -241,7 +241,7 @@ Default `false`
 drag.set({clearGarbage: true});
 ```
 
-####imposition
+### imposition
 
 Set barriers for your draggable elements
 
@@ -252,7 +252,7 @@ Default `false`
 drag.set({imposition: '.wall, .another-brick-in-the-wall'});
 ```
 
-####navigation
+### navigation
 
 Set this option and drags your element by keyboard
 
@@ -269,7 +269,7 @@ drag.set({navigation: {
 }});
 ```
 
-####callOnTarget(target, elem, callOnTarget, lastPoint)
+### callOnTarget(target, elem, callOnTarget, lastPoint)
 
 Callback which occurs when dragEnd event was on destination target
 
@@ -285,7 +285,7 @@ drag.set({callOnTarget: function(target, elem, callOnTarget, lastPoint){
 }});
 ```
 
-####callDragEnd(elem, callOnTarget, lastPoint)
+### callDragEnd(elem, callOnTarget, lastPoint)
 
 Callback which occurs when dragEnd event was occur
 
